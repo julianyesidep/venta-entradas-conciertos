@@ -1,0 +1,25 @@
+from fastapi import FastAPI
+from router.entidades import entrada
+from fastapi.middleware.cors import CORSMiddleware
+from decouple import config
+
+app = FastAPI()
+
+origins = [
+    config('FRONTEND_URL')
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=['*'],
+    allow_headers=['*']
+)
+
+@app.get('/')
+def welcome():
+    return {'message': 'Bienvenido al sistema FastTicket'}
+
+
+app.include_router(entrada)
